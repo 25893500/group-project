@@ -1,11 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Group Project</title>
+    <title>Name - Affordable Meals</title>
 </head>
+
 <body>
-    <p>Hello world</p>
+
+    <header>
+        <h1>Name</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#meals">Menu</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#cart">Cart (0)</a></li>
+                <li><a href="#login">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home">
+            <h2>Delicious, Affordable Meals for Students</h2>
+            <p>Healthy food that fits your budget. Delivered to campus or pickup nearby.</p>
+            <button onclick="window.location.href='#meals'">View Menu</button>
+        </section>
+
+        <section id="features">
+            <h3>Why Choose Us?</h3>
+            <ul>
+                <li><strong>Budget Friendly:</strong> Meals under £10.</li>
+                <li><strong>Student IDs:</strong> Verify for extra discounts.</li>
+                <li><strong>Fast:</strong> Ready between classes.</li>
+            </ul>
+        </section>
+
+        <section id="meals">
+            <h3>Featured Meals</h3>
+
+            <!-- Meal Item 1 -->
+            <article>
+                <h4>Spicy Chicken Rice Bowl</h4>
+                <p>Grilled chicken breast with spicy mayo, served over brown rice and steamed veggies.</p>
+                <p><strong>£8.50</strong></p>
+                <button>Add to Cart</button>
+            </article>
+
+            <!-- Meal Item 2 -->
+            <article>
+                <h4>Veggie Pasta Primavera</h4>
+                <p>Fresh seasonal vegetables tossed with penne pasta in a light garlic olive oil sauce.</p>
+                <p><strong>£7.00</strong></p>
+                <button>Add to Cart</button>
+            </article>
+
+            <!-- Meal Item 3 -->
+            <article>
+                <h4>Classic Cheeseburger & Fries</h4>
+                <p>Juicy beef patty with cheddar cheese, lettuce, tomato, and our secret sauce.</p>
+                <p><strong>£9.00</strong></p>
+                <button>Add to Cart</button>
+            </article>
+        </section>
+
+        <section id="how-it-works">
+            <h3>How It Works</h3>
+            <ol>
+                <li>Browse our daily rotating menu.</li>
+                <li>Select your meal and pickup time.</li>
+                <li>Pay securely online.</li>
+                <li>Pick up your hot meal on campus!</li>
+            </ol>
+        </section>
+
+        <section id="about">
+            <h3>About Name</h3>
+            <p>We believe every student deserves a good meal without breaking the bank. Our mission is to provide
+                nutritious, tasty, and affordable food options directly to university campuses.</p>
+        </section>
+
+        <section id="newsletter">
+            <h3>Get Daily Deals</h3>
+            <form action="#" method="post">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Name. All rights reserved.</p>
+        <p>
+            <a href="#privacy">Privacy Policy</a> |
+            <a href="#terms">Terms of Service</a>
+        </p>
+        <address>
+            Contact us: <a href="mailto:support@gmail.com">support@gmail.com</a>
+        </address>
+    </footer>
+
 </body>
+
 </html>
