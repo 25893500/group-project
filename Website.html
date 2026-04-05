@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nourish Foods · Healthier Eating Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&family=Black+Han+Sans&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green: #2d6a4f;
+      --lime: #95d5b2;
+      --cream: #fefae0;
+      --orange: #e07a2f;
+      --red: #c4433a;
+      --dark: #1a1a1a;
+      --mid: #444;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(254,250,224,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #d4e9d8;
+    }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--mid);
+      font-size: 0.9rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--green); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--dark); border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav drawer */
+    .mobile-nav {
+      display: none; position: fixed;
+      top: 61px; left: 0; right: 0;
+      background: rgba(254,250,224,0.98);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #d4e9d8;
+      padding: 1rem 2rem 1.5rem;
+      z-index: 99; flex-direction: column; gap: 0;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      text-decoration: none; color: var(--mid);
+      font-size: 1rem; font-weight: 500;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #e8f5ec;
+      transition: color 0.2s;
+    }
+    .mobile-nav a:last-child { border-bottom: none; }
+    .mobile-nav a:hover { color: var(--green); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      section { padding: 4rem 1.25rem; }
+
+      .hero { padding: 5rem 1.25rem 3rem; }
+      .hero-emoji-row { font-size: 2rem; gap: 1rem; margin-top: 2.5rem; }
+
+      .why-grid { grid-template-columns: 1fr 1fr; }
+      .foods-grid { grid-template-columns: 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
+
+      .plate-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .plate-visual { max-width: 280px; margin: 0 auto; }
+
+      /* Subscription steps */
+      .sub-steps { gap: 0; }
+      .step-label { font-size: 0.65rem; }
+      .plans-grid { grid-template-columns: 1fr; }
+      .customise-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .meal-picker-grid { grid-template-columns: 1fr 1fr; }
+      .step-nav { flex-direction: row; gap: 0.75rem; }
+      .step-btn { font-size: 0.82rem; padding: 0.6rem 1.1rem; }
+
+      /* Footer */
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      nav { padding: 1rem 1.25rem; }
+    }
+
+    @media (max-width: 480px) {
+      .why-grid { grid-template-columns: 1fr; }
+      .meal-picker-grid { grid-template-columns: 1fr; }
+      .option-pills { gap: 0.4rem; }
+      .pill { font-size: 0.82rem; padding: 0.45rem 0.9rem; }
+      .subscribe-title { font-size: 1.5rem; }
+    }
+
+
+    /* ── NOURISH LOGO ── */
+    .nav-logo {
+      display: flex; align-items: baseline; gap: 0.3rem;
+      text-decoration: none; cursor: default;
+    }
+    .logo-nourish {
+      font-family: 'Black Han Sans', 'Arial Black', sans-serif;
+      font-size: 1.55rem;
+      color: var(--dark);
+      letter-spacing: -0.01em;
+      line-height: 1;
+      display: inline-flex; align-items: center;
+    }
+    .logo-sushi {
+      display: inline-block;
+      font-size: 1.15rem;
+      margin: 0 1px;
+      transform: translateY(0px);
+    }
+    .logo-underline {
+      display: inline-block;
+      width: 1.1ch; height: 4px;
+      background: #b5651d;
+      border-radius: 2px;
+      margin: 0 1px;
+      transform: translateY(-3px);
+    }
+    .logo-foods {
+      font-family: 'Black Han Sans', 'Arial Black', sans-serif;
+      font-size: 0.82rem;
+      color: var(--dark);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    /* ── REVIEWS ── */
+    #reviews { background: var(--cream); }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.75rem;
+      max-width: 1060px; margin: 0 auto;
+    }
+    .review-card {
+      background: #fff;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      border: 1px solid #d4e9d8;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .review-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(45,106,79,0.1); }
+    .review-quote {
+      font-size: 3rem; line-height: 1;
+      color: var(--lime);
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 0.25rem;
+    }
+    .review-text {
+      font-size: 0.95rem; color: var(--mid);
+      line-height: 1.65; margin-bottom: 1.2rem;
+      font-style: italic;
+    }
+    .review-stars { color: #f4a91e; font-size: 1rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
+    .reviewer {
+      display: flex; align-items: center; gap: 0.75rem;
+      border-top: 1px solid #eee; padding-top: 1rem;
+    }
+    .reviewer-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .reviewer-name { font-weight: 500; font-size: 0.9rem; color: var(--dark); }
+    .reviewer-tag  { font-size: 0.78rem; color: #888; }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--mid);
+      font-size: 0.9rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--green); }
+
+    /* Force hamburger hidden on desktop, visible on mobile */
+    @media (max-width: 768px) {
+      .nav-links { display: none !important; }
+      .hamburger { display: flex !important; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid; place-items: center;
+      padding: 6rem 2rem 3rem;
+      position: relative;
+      background: radial-gradient(ellipse at 70% 40%, #b7e4c7 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, #d8f3dc 0%, transparent 50%),
+                  var(--cream);
+    }
+    .hero-inner { max-width: 860px; text-align: center; }
+    .hero-tag {
+      display: inline-block;
+      background: var(--green);
+      color: #fff;
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.4rem 1rem; border-radius: 100px;
+      margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 1.05;
+      color: var(--green);
+      margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
+    }
+    .hero h1 span { color: var(--orange); }
+    .hero p {
+      font-size: 1.15rem; color: var(--mid);
+      max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.7;
+      opacity: 0; animation: fadeUp 0.7s 0.6s forwards;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: var(--green); color: #fff;
+      padding: 0.85rem 2.2rem; border-radius: 100px;
+      text-decoration: none; font-weight: 500; font-size: 1rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      opacity: 0; animation: fadeUp 0.7s 0.8s forwards;
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(45,106,79,0.35); }
+
+    .hero-emoji-row {
+      margin-top: 4rem;
+      display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;
+      font-size: 2.5rem;
+      opacity: 0; animation: fadeUp 0.7s 1s forwards;
+    }
+    .hero-emoji-row span {
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+    .hero-emoji-row span:nth-child(2) { animation-delay: 0.4s; }
+    .hero-emoji-row span:nth-child(3) { animation-delay: 0.8s; }
+    .hero-emoji-row span:nth-child(4) { animation-delay: 1.2s; }
+    .hero-emoji-row span:nth-child(5) { animation-delay: 1.6s; }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: 6rem 2rem; }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--green);
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+    .section-sub {
+      text-align: center; color: var(--mid);
+      font-size: 1rem; margin-bottom: 3.5rem;
+      max-width: 500px; margin-left: auto; margin-right: auto;
+      line-height: 1.6;
+    }
+
+    /* ── WHY SECTION ── */
+    #why { background: #fff; }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      max-width: 960px; margin: 0 auto;
+    }
+    .why-card {
+      background: var(--cream);
+      border-radius: 1.25rem;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border: 1px solid #d4e9d8;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .why-card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(45,106,79,0.12); }
+    .why-card .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .why-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; color: var(--dark); margin-bottom: 0.6rem;
+    }
+    .why-card p { font-size: 0.9rem; color: var(--mid); line-height: 1.6; }
+
+    /* ── FOOD GROUPS ── */
+    #foods { background: var(--cream); }
+    .foods-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 2rem;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .food-card {
+      border-radius: 1.5rem;
+      overflow: hidden;
+      border: 1px solid #d4e9d8;
+      background: #fff;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .food-card:hover { transform: translateY(-6px); box-shadow: 0 14px 40px rgba(0,0,0,0.09); }
+    .food-card-header {
+      padding: 2rem;
+      font-size: 3rem;
+      text-align: center;
+    }
+    .food-card-header.veggie  { background: #d8f3dc; }
+    .food-card-header.protein { background: #fde8d8; }
+    .food-card-header.grain   { background: #fff3cd; }
+    .food-card-header.dairy   { background: #dbeafe; }
+    .food-card body { padding: 1.5rem; }
+    .food-card-body { padding: 1.5rem 1.75rem 2rem; }
+    .food-card-body h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--dark);
+    }
+    .food-card-body p { font-size: 0.9rem; color: var(--mid); line-height: 1.6; margin-bottom: 1rem; }
+    .food-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .food-list li {
+      background: var(--cream);
+      border: 1px solid #c8e6c9;
+      border-radius: 100px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.8rem; color: var(--green); font-weight: 500;
+    }
+
+    /* ── TIPS ── */
+    #tips { background: var(--green); }
+    #tips .section-title { color: var(--lime); }
+    #tips .section-sub { color: rgba(255,255,255,0.7); }
+    .tips-list {
+      max-width: 740px; margin: 0 auto;
+      display: flex; flex-direction: column; gap: 1.2rem;
+    }
+    .tip {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 1rem;
+      padding: 1.25rem 1.75rem;
+      display: flex; align-items: flex-start; gap: 1.2rem;
+      transition: background 0.2s;
+    }
+    .tip:hover { background: rgba(255,255,255,0.14); }
+    .tip-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; color: var(--lime);
+      line-height: 1; min-width: 2rem;
+    }
+    .tip-text h4 { color: #fff; font-size: 1rem; margin-bottom: 0.3rem; }
+    .tip-text p { color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.55; }
+
+    /* ── PLATE GUIDE ── */
+    #plate { background: #fff; }
+    .plate-wrap {
+      max-width: 860px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; align-items: center;
+    }
+    @media (max-width: 640px) { .plate-wrap { grid-template-columns: 1fr; } }
+    .plate-visual {
+      width: 100%; aspect-ratio: 1;
+      border-radius: 50%;
+      position: relative;
+      background: conic-gradient(
+        #52b788 0deg 180deg,
+        #e07a2f 180deg 270deg,
+        #c4433a 270deg 315deg,
+        #adb5bd 315deg 360deg
+      );
+      box-shadow: 0 0 0 8px #fff, 0 0 0 12px #d4e9d8, 0 16px 48px rgba(0,0,0,0.1);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .plate-center {
+      width: 38%; aspect-ratio: 1;
+      background: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+    }
+    .plate-legend { display: flex; flex-direction: column; gap: 1rem; }
+    .legend-item { display: flex; align-items: center; gap: 0.8rem; }
+    .legend-dot {
+      width: 14px; height: 14px;
+      border-radius: 50%; flex-shrink: 0;
+    }
+    .legend-item h4 { font-size: 0.95rem; color: var(--dark); margin-bottom: 0.15rem; }
+    .legend-item p { font-size: 0.82rem; color: var(--mid); line-height: 1.4; }
+
+    /* ── SUBSCRIPTION PLANS ── */
+    #products { background: #fff; }
+
+    /* Step indicator */
+    .sub-steps {
+      display: flex; justify-content: center; align-items: center;
+      gap: 0; max-width: 600px; margin: 0 auto 3.5rem;
+    }
+    .sub-step {
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      flex: 1; position: relative; cursor: pointer;
+    }
+    .sub-step:not(:last-child)::after {
+      content: ''; position: absolute;
+      top: 18px; left: 60%; width: 80%;
+      height: 2px; background: #e0e0e0;
+      z-index: 0;
+    }
+    .sub-step.done:not(:last-child)::after { background: var(--green); }
+    .step-circle {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 2px solid #ddd; background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 700; color: #aaa;
+      position: relative; z-index: 1;
+      transition: all 0.3s;
+    }
+    .sub-step.active .step-circle { border-color: var(--green); color: var(--green); background: #f0faf4; }
+    .sub-step.done .step-circle { background: var(--green); border-color: var(--green); color: #fff; }
+    .step-label { font-size: 0.75rem; color: #aaa; font-weight: 500; text-align: center; }
+    .sub-step.active .step-label, .sub-step.done .step-label { color: var(--green); }
+
+    /* Step panels */
+    .sub-panel { display: none; max-width: 1060px; margin: 0 auto; }
+    .sub-panel.active { display: block; }
+
+    /* Plan cards */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.75rem;
+    }
+    .plan-card {
+      border-radius: 1.5rem; overflow: hidden;
+      border: 2px solid #e8f5ec; background: var(--cream);
+      transition: all 0.25s; cursor: pointer;
+      position: relative;
+    }
+    .plan-card:hover { border-color: var(--green); box-shadow: 0 12px 36px rgba(45,106,79,0.12); }
+    .plan-card.selected { border-color: var(--green); box-shadow: 0 0 0 4px rgba(45,106,79,0.12); }
+    .plan-popular-tag {
+      position: absolute; top: 0; right: 1.5rem;
+      background: var(--orange); color: #fff;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem 0.5rem; border-radius: 0 0 0.75rem 0.75rem;
+    }
+    .plan-header {
+      padding: 2rem 2rem 1rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .plan-emoji { font-size: 2.5rem; }
+    .plan-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; color: var(--dark);
+    }
+    .plan-tagline { font-size: 0.88rem; color: var(--mid); line-height: 1.5; }
+    .plan-perks {
+      padding: 0 2rem 1.5rem;
+      list-style: none; display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .plan-perks li {
+      font-size: 0.87rem; color: var(--mid);
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .plan-perks li::before { content: '✓'; color: var(--green); font-weight: 700; }
+    .plan-footer-row {
+      padding: 1.25rem 2rem;
+      background: #fff;
+      border-top: 1px solid #e8f5ec;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .plan-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; color: var(--dark);
+    }
+    .plan-price small { font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--mid); }
+    .plan-select-btn {
+      background: var(--green); color: #fff;
+      border: none; cursor: pointer;
+      padding: 0.6rem 1.4rem; border-radius: 100px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .plan-select-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(45,106,79,0.3); }
+    .plan-card.selected .plan-select-btn { background: var(--lime); color: var(--dark); }
+
+    /* Customise step */
+    .customise-wrap {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;
+    }
+    @media (max-width: 640px) { .customise-wrap { grid-template-columns: 1fr; } }
+    .custom-group { display: flex; flex-direction: column; gap: 1.2rem; }
+    .custom-group h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; color: var(--dark);
+    }
+    .option-pills { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .pill {
+      padding: 0.55rem 1.2rem; border-radius: 100px;
+      border: 1.5px solid #d4e9d8; background: #fff;
+      font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+      color: var(--mid); cursor: pointer; transition: all 0.2s;
+    }
+    .pill:hover, .pill.active { background: var(--green); color: #fff; border-color: var(--green); }
+    .meal-picker-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+    }
+    .meal-pill {
+      padding: 0.75rem 1rem; border-radius: 1rem;
+      border: 1.5px solid #d4e9d8; background: #fff;
+      display: flex; align-items: center; gap: 0.7rem;
+      font-size: 0.85rem; color: var(--mid); cursor: pointer;
+      transition: all 0.2s;
+    }
+    .meal-pill:hover, .meal-pill.active { border-color: var(--green); background: #f0faf4; color: var(--dark); }
+    .meal-pill span { font-size: 1.3rem; }
+
+    /* Summary step */
+    .summary-wrap {
+      max-width: 600px; margin: 0 auto;
+      background: var(--cream); border-radius: 1.5rem;
+      border: 1px solid #d4e9d8; overflow: hidden;
+    }
+    .summary-header {
+      background: var(--green); color: #fff;
+      padding: 1.75rem 2rem;
+    }
+    .summary-header h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.3rem; }
+    .summary-header p { font-size: 0.88rem; opacity: 0.8; }
+    .summary-rows { padding: 1.5rem 2rem; display: flex; flex-direction: column; gap: 1rem; }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.92rem; color: var(--mid);
+      padding-bottom: 1rem; border-bottom: 1px solid #e8f5ec;
+    }
+    .summary-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .summary-row strong { color: var(--dark); font-weight: 600; }
+    .summary-total {
+      padding: 1.25rem 2rem;
+      background: #fff; border-top: 2px solid #d4e9d8;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .summary-total span { font-weight: 600; font-size: 1rem; }
+    .summary-total .total-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; color: var(--green);
+    }
+    .sub-cta {
+      display: block; width: calc(100% - 4rem); margin: 1.5rem 2rem;
+      background: var(--green); color: #fff;
+      border: none; cursor: pointer; border-radius: 100px;
+      padding: 1rem; text-align: center;
+      font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .sub-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,106,79,0.35); }
+
+    /* Nav buttons between steps */
+    .step-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 1060px; margin: 2.5rem auto 0;
+    }
+    .step-btn {
+      padding: 0.65rem 1.75rem; border-radius: 100px;
+      border: 1.5px solid var(--green); background: transparent;
+      color: var(--green); font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; font-weight: 500; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .step-btn.primary { background: var(--green); color: #fff; }
+    .step-btn:hover { box-shadow: 0 4px 14px rgba(45,106,79,0.25); }
+    .step-btn.hidden { visibility: hidden; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #2d5a3d;
+      color: rgba(255,255,255,0.75);
+      padding: 4rem 3rem 3rem;
+    }
+    .footer-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1.2fr 0.8fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    @media (max-width: 700px) {
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+    .footer-logo {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1.2rem;
+    }
+    .footer-logo-icon {
+      width: 42px; height: 42px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .footer-logo-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; line-height: 1.2;
+      color: #fff; font-weight: 700;
+    }
+    .footer-tagline {
+      font-size: 0.88rem; line-height: 1.65;
+      color: rgba(255,255,255,0.65);
+      max-width: 300px;
+    }
+    .footer-info { display: flex; flex-direction: column; gap: 1.5rem; }
+    .footer-info-block h4 {
+      font-size: 0.85rem; font-weight: 600;
+      color: #fff; margin-bottom: 0.35rem;
+      letter-spacing: 0.02em;
+    }
+    .footer-info-block p {
+      font-size: 0.85rem; line-height: 1.6;
+      color: rgba(255,255,255,0.65);
+    }
+    .footer-socials {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.25rem;
+    }
+    .social-btn {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      transition: transform 0.2s, opacity 0.2s;
+      flex-shrink: 0;
+    }
+    .social-btn:hover { transform: translateY(-2px); opacity: 0.85; }
+    .footer-subscribe { display: flex; flex-direction: column; gap: 1rem; }
+    .subscribe-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; font-weight: 900;
+      color: #fff; letter-spacing: 0.05em;
+      border-bottom: 2px solid rgba(255,255,255,0.4);
+      padding-bottom: 0.4rem; display: inline-block;
+    }
+    .footer-logo-mark {
+      display: flex; align-items: baseline; gap: 0.3rem; margin-bottom: 1.2rem;
+    }
+    .footer-logo-nourish {
+      font-family: 'Black Han Sans', 'Arial Black', sans-serif;
+      font-size: 1.8rem; color: #fff;
+      letter-spacing: -0.01em; line-height: 1;
+      display: inline-flex; align-items: center;
+    }
+    .footer-logo-sushi { font-size: 1.4rem; margin: 0 1px; }
+    .footer-logo-foods {
+      font-family: 'Black Han Sans', 'Arial Black', sans-serif;
+      font-size: 0.9rem; color: rgba(255,255,255,0.75);
+      letter-spacing: 0.18em; text-transform: uppercase;
+    }
+    .subscribe-form {
+      font-size: 0.83rem; color: rgba(255,255,255,0.6);
+      line-height: 1.5; margin-bottom: 1rem;
+    }
+    .subscribe-form {
+      display: flex; gap: 0; margin-bottom: 0.75rem;
+      border-radius: 100px; overflow: hidden;
+      border: 1.5px solid rgba(255,255,255,0.25);
+    }
+    .sub-email-input {
+      flex: 1; background: rgba(255,255,255,0.1);
+      border: none; outline: none; padding: 0.7rem 1.1rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+      color: #fff;
+    }
+    .sub-email-input::placeholder { color: rgba(255,255,255,0.45); }
+    .sub-email-btn {
+      background: var(--lime); color: var(--dark);
+      border: none; cursor: pointer;
+      padding: 0.7rem 1.1rem; font-size: 1rem; font-weight: 700;
+      transition: background 0.2s;
+    }
+    .sub-email-btn:hover { background: #74c69d; }
+    .subscribe-success {
+      display: none; font-size: 0.85rem;
+      color: var(--lime); margin-bottom: 0.75rem;
+    }
+    .footer-copy {
+      font-size: 0.82rem; color: rgba(255,255,255,0.5);
+      line-height: 1.5; margin-top: 0.5rem;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <span class="logo-nourish">N<span class="logo-sushi">🍣</span>URISH</span>
+      <span class="logo-foods">Foods</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#why">Why It Matters</a></li>
+      <li><a href="#foods">Food Groups</a></li>
+      <li><a href="#products">Meal Kits</a></li>
+      <li><a href="#tips">Tips</a></li>
+      <li><a href="#plate">Your Plate</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile nav drawer -->
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="#why" onclick="closeMenu()">Why It Matters</a>
+    <a href="#foods" onclick="closeMenu()">Food Groups</a>
+    <a href="#products" onclick="closeMenu()">Meal Kits</a>
+    <a href="#tips" onclick="closeMenu()">Tips</a>
+    <a href="#plate" onclick="closeMenu()">Your Plate</a>
+    <a href="#reviews" onclick="closeMenu()">Reviews</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>Fuel Your Body<br>with <span>Better Food</span></h1>
+      <p>Discover how small changes to what you eat can lead to big improvements in your energy, mood, and long-term health.</p>
+      <a href="#why" class="hero-cta">Start Exploring →</a>
+      <div class="hero-emoji-row">
+        <span>🥦</span><span>🍎</span><span>🥕</span><span>🫐</span><span>🥑</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY IT MATTERS -->
+  <section id="why">
+    <h2 class="section-title reveal">Why Eat Healthier?</h2>
+    <p class="section-sub reveal">What we eat directly affects how we feel every single day — from energy levels to focus and beyond.</p>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="icon">⚡</div>
+        <h3>More Energy</h3>
+        <p>Whole foods provide steady energy throughout the day, avoiding the crashes that come from processed snacks.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="icon">🧠</div>
+        <h3>Better Focus</h3>
+        <p>Nutrients like omega-3s, iron, and B vitamins support brain function, helping you concentrate and stay sharp.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="icon">💪</div>
+        <h3>Stronger Body</h3>
+        <p>Protein, calcium, and vitamins build and repair muscles and bones, keeping you physically resilient.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="icon">😴</div>
+        <h3>Better Sleep</h3>
+        <p>Balanced meals support healthy sleep cycles. Magnesium-rich foods like nuts and leafy greens are especially helpful.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOD GROUPS -->
+  <section id="foods">
+    <h2 class="section-title reveal">Key Food Groups</h2>
+    <p class="section-sub reveal">A balanced diet draws from all of these categories — variety is key.</p>
+    <div class="foods-grid">
+      <div class="food-card reveal">
+        <div class="food-card-header veggie">🥦</div>
+        <div class="food-card-body">
+          <h3>Fruits & Vegetables</h3>
+          <p>Rich in fibre, vitamins, and antioxidants. Aim to fill half your plate with colourful produce.</p>
+          <ul class="food-list">
+            <li>Spinach</li><li>Broccoli</li><li>Blueberries</li><li>Carrots</li><li>Avocado</li><li>Tomatoes</li>
+          </ul>
+        </div>
+      </div>
+      <div class="food-card reveal">
+        <div class="food-card-header protein">🍗</div>
+        <div class="food-card-body">
+          <h3>Lean Proteins</h3>
+          <p>Essential for muscle repair, immune function, and keeping you full for longer.</p>
+          <ul class="food-list">
+            <li>Chicken</li><li>Lentils</li><li>Eggs</li><li>Tofu</li><li>Chickpeas</li><li>Salmon</li>
+          </ul>
+        </div>
+      </div>
+      <div class="food-card reveal">
+        <div class="food-card-header grain">🌾</div>
+        <div class="food-card-body">
+          <h3>Whole Grains</h3>
+          <p>Provide sustained energy and fibre. Choose whole over refined wherever possible.</p>
+          <ul class="food-list">
+            <li>Oats</li><li>Brown Rice</li><li>Quinoa</li><li>Wholemeal Bread</li><li>Barley</li>
+          </ul>
+        </div>
+      </div>
+      <div class="food-card reveal">
+        <div class="food-card-header dairy">🥛</div>
+        <div class="food-card-body">
+          <h3>Dairy & Alternatives</h3>
+          <p>Important sources of calcium and vitamin D for strong bones and teeth.</p>
+          <ul class="food-list">
+            <li>Greek Yogurt</li><li>Milk</li><li>Oat Milk</li><li>Cheese</li><li>Kefir</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIPS -->
+  <section id="tips">
+    <h2 class="section-title reveal">Simple Healthy Eating Tips</h2>
+    <p class="section-sub reveal">You don't need a perfect diet — just small, consistent improvements.</p>
+    <div class="tips-list">
+      <div class="tip reveal">
+        <div class="tip-num">1</div>
+        <div class="tip-text">
+          <h4>Drink More Water</h4>
+          <p>Aim for 6–8 glasses a day. Staying hydrated improves concentration, digestion, and energy levels.</p>
+        </div>
+      </div>
+      <div class="tip reveal">
+        <div class="tip-num">2</div>
+        <div class="tip-text">
+          <h4>Eat the Rainbow</h4>
+          <p>Different coloured fruits and vegetables contain different nutrients. Variety means more complete nutrition.</p>
+        </div>
+      </div>
+      <div class="tip reveal">
+        <div class="tip-num">3</div>
+        <div class="tip-text">
+          <h4>Cut Back on Ultra-Processed Foods</h4>
+          <p>Limit crisps, sugary drinks, and fast food. These are often high in salt, sugar, and unhealthy fats.</p>
+        </div>
+      </div>
+      <div class="tip reveal">
+        <div class="tip-num">4</div>
+        <div class="tip-text">
+          <h4>Don't Skip Breakfast</h4>
+          <p>A nutritious breakfast jumpstarts your metabolism and helps you make better food choices throughout the day.</p>
+        </div>
+      </div>
+      <div class="tip reveal">
+        <div class="tip-num">5</div>
+        <div class="tip-text">
+          <h4>Cook at Home More Often</h4>
+          <p>Home-cooked meals give you control over ingredients and portions — and usually cost less too.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATE GUIDE -->
+  <section id="plate">
+    <h2 class="section-title reveal">The Healthy Plate</h2>
+    <p class="section-sub reveal">A simple visual guide to balancing your meals at a glance.</p>
+    <div class="plate-wrap">
+      <div class="plate-visual reveal">
+        <div class="plate-center">🍽️</div>
+      </div>
+      <div class="plate-legend reveal">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#52b788"></div>
+          <div>
+            <h4>½ Fruits & Vegetables</h4>
+            <p>The biggest portion — aim for a variety of colours and types every day.</p>
+          </div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#e07a2f"></div>
+          <div>
+            <h4>¼ Whole Grains</h4>
+            <p>Brown rice, quinoa, wholemeal bread — choose whole over white.</p>
+          </div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#c4433a"></div>
+          <div>
+            <h4>⅛ Lean Protein</h4>
+            <p>Chicken, fish, beans, lentils, or tofu — keep portions moderate.</p>
+          </div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#adb5bd"></div>
+          <div>
+            <h4>⅛ Dairy or Alternatives</h4>
+            <p>A glass of milk, yogurt, or a plant-based alternative on the side.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBSCRIPTION PLANS -->
+  <section id="products">
+    <h2 class="section-title reveal">Choose Your Plan</h2>
+    <p class="section-sub reveal">Fresh meal kits delivered weekly. No commitment — pause or cancel anytime.</p>
+
+    <!-- Step indicator -->
+    <div class="sub-steps reveal" id="sub-steps">
+      <div class="sub-step active" id="step-ind-1">
+        <div class="step-circle">1</div>
+        <div class="step-label">Pick a Plan</div>
+      </div>
+      <div class="sub-step" id="step-ind-2">
+        <div class="step-circle">2</div>
+        <div class="step-label">Customise</div>
+      </div>
+      <div class="sub-step" id="step-ind-3">
+        <div class="step-circle">3</div>
+        <div class="step-label">Summary</div>
+      </div>
+    </div>
+
+    <!-- STEP 1: Pick a plan -->
+    <div class="sub-panel active" id="panel-1">
+      <div class="plans-grid">
+
+        <div class="plan-card" onclick="selectPlan(this, 'Starter', 5.99)">
+          <div class="plan-header">
+            <div class="plan-emoji">🥗</div>
+            <div class="plan-name">Starter</div>
+            <div class="plan-tagline">Perfect for solo eaters exploring healthy cooking for the first time.</div>
+          </div>
+          <ul class="plan-perks">
+            <li>2 meals per week</li>
+            <li>1–2 servings per meal</li>
+            <li>Pre-portioned fresh ingredients</li>
+            <li>Simple step-by-step recipe cards</li>
+          </ul>
+          <div class="plan-footer-row">
+            <div class="plan-price">£5.99 <small>/ meal</small></div>
+            <button class="plan-select-btn">Select</button>
+          </div>
+        </div>
+
+        <div class="plan-card" onclick="selectPlan(this, 'Classic', 7.49)">
+          <div class="plan-popular-tag">Most Popular</div>
+          <div class="plan-header">
+            <div class="plan-emoji">🍱</div>
+            <div class="plan-name">Classic</div>
+            <div class="plan-tagline">Our best-seller — great variety for individuals or couples.</div>
+          </div>
+          <ul class="plan-perks">
+            <li>3 meals per week</li>
+            <li>2 servings per meal</li>
+            <li>Wider menu with 15+ choices</li>
+            <li>Mix of quick &amp; gourmet recipes</li>
+            <li>Free delivery every week</li>
+          </ul>
+          <div class="plan-footer-row">
+            <div class="plan-price">£7.49 <small>/ meal</small></div>
+            <button class="plan-select-btn">Select</button>
+          </div>
+        </div>
+
+        <div class="plan-card" onclick="selectPlan(this, 'Family', 6.49)">
+          <div class="plan-header">
+            <div class="plan-emoji">👨‍👩‍👧‍👦</div>
+            <div class="plan-name">Family</div>
+            <div class="plan-tagline">Bigger portions and crowd-pleasing recipes the whole family will love.</div>
+          </div>
+          <ul class="plan-perks">
+            <li>4 meals per week</li>
+            <li>4 servings per meal</li>
+            <li>Kid-friendly recipe options</li>
+            <li>Bigger box, better value</li>
+            <li>Free delivery + loyalty rewards</li>
+          </ul>
+          <div class="plan-footer-row">
+            <div class="plan-price">£6.49 <small>/ meal</small></div>
+            <button class="plan-select-btn">Select</button>
+          </div>
+        </div>
+
+      </div>
+      <div class="step-nav">
+        <button class="step-btn hidden">Back</button>
+        <button class="step-btn primary" onclick="goStep(2)">Next: Customise →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Customise -->
+    <div class="sub-panel" id="panel-2">
+      <div class="customise-wrap">
+
+        <div class="custom-group">
+          <h3>Dietary Preference</h3>
+          <div class="option-pills">
+            <button class="pill active" onclick="setPref(this)">Everything</button>
+            <button class="pill" onclick="setPref(this)">Vegetarian</button>
+            <button class="pill" onclick="setPref(this)">Vegan</button>
+            <button class="pill" onclick="setPref(this)">Pescatarian</button>
+          </div>
+
+          <h3 style="margin-top:1rem">Delivery Day</h3>
+          <div class="option-pills">
+            <button class="pill active" onclick="setDay(this)">Monday</button>
+            <button class="pill" onclick="setDay(this)">Wednesday</button>
+            <button class="pill" onclick="setDay(this)">Friday</button>
+            <button class="pill" onclick="setDay(this)">Saturday</button>
+          </div>
+        </div>
+
+        <div class="custom-group">
+          <h3>Pick Your Meals This Week</h3>
+          <div class="meal-picker-grid">
+            <div class="meal-pill" data-diets="everything vegetarian vegan" onclick="toggleMeal(this)"><span>🥗</span> Buddha Bowl</div>
+            <div class="meal-pill" data-diets="everything pescatarian" onclick="toggleMeal(this)"><span>🍗</span> Lemon Chicken</div>
+            <div class="meal-pill" data-diets="everything pescatarian" onclick="toggleMeal(this)"><span>🐟</span> Teriyaki Salmon</div>
+            <div class="meal-pill" data-diets="everything vegetarian vegan" onclick="toggleMeal(this)"><span>🥘</span> Lentil Dahl</div>
+            <div class="meal-pill" data-diets="everything" onclick="toggleMeal(this)"><span>🥩</span> Beef Stir-Fry</div>
+            <div class="meal-pill" data-diets="everything vegetarian vegan" onclick="toggleMeal(this)"><span>🫙</span> Chickpea Bowl</div>
+            <div class="meal-pill" data-diets="everything vegetarian" onclick="toggleMeal(this)"><span>🍝</span> Pesto Pasta</div>
+            <div class="meal-pill" data-diets="everything pescatarian" onclick="toggleMeal(this)"><span>🌮</span> Fish Tacos</div>
+          </div>
+          <p style="font-size:0.8rem;color:#888;margin-top:0.5rem" id="meal-hint">Select meals to fill your plan</p>
+        </div>
+
+      </div>
+      <div class="step-nav">
+        <button class="step-btn" onclick="goStep(1)">← Back</button>
+        <button class="step-btn primary" onclick="goStep(3)">Review Summary →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Summary -->
+    <div class="sub-panel" id="panel-3">
+      <div class="summary-wrap">
+        <div class="summary-header">
+          <h3>Your Subscription Summary</h3>
+          <p>Review your order before subscribing</p>
+        </div>
+        <div class="summary-rows">
+          <div class="summary-row"><span>Plan</span><strong id="sum-plan">—</strong></div>
+          <div class="summary-row"><span>Dietary Preference</span><strong id="sum-pref">Everything</strong></div>
+          <div class="summary-row"><span>Delivery Day</span><strong id="sum-day">Monday</strong></div>
+          <div class="summary-row"><span>Meals Selected</span><strong id="sum-meals">—</strong></div>
+          <div class="summary-row"><span>Price per meal</span><strong id="sum-price">—</strong></div>
+          <div class="summary-row"><span>Billing</span><strong>Weekly · Cancel anytime</strong></div>
+        </div>
+        <div class="summary-total">
+          <span>Weekly Total</span>
+          <span class="total-price" id="sum-total">—</span>
+        </div>
+        <button class="sub-cta" onclick="handleSubscribe()">🌿 Start My Subscription</button>
+      </div>
+      <div class="step-nav">
+        <button class="step-btn" onclick="goStep(2)">← Back</button>
+        <button class="step-btn hidden">Next</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews">
+    <h2 class="section-title reveal">What People Are Saying</h2>
+    <p class="section-sub reveal">Real people sharing how eating healthier changed their lives.</p>
+    <div class="reviews-grid">
+
+      <div class="review-card reveal">
+        <div class="review-quote">"</div>
+        <p class="review-text">Since switching to whole foods and cutting out processed snacks, my energy in the afternoons is completely different. I used to crash every day around 3pm — not anymore!</p>
+        <div class="review-stars">★★★★★</div>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#d8f3dc;">😊</div>
+          <div>
+            <div class="reviewer-name">Sophie T.</div>
+            <div class="reviewer-tag">Switched diets 6 months ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-quote">"</div>
+        <p class="review-text">I started meal prepping with more vegetables and lean proteins. Not only did I lose weight, but my skin cleared up too. I didn't expect that at all!</p>
+        <div class="review-stars">★★★★★</div>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#fde8d8;">🙂</div>
+          <div>
+            <div class="reviewer-name">Marcus R.</div>
+            <div class="reviewer-tag">Meal prepper &amp; fitness enthusiast</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-quote">"</div>
+        <p class="review-text">I used to think eating healthy was expensive and boring. But once I started cooking at home with simple ingredients like lentils and oats, I actually save money now.</p>
+        <div class="review-stars">★★★★☆</div>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#fff3cd;">😄</div>
+          <div>
+            <div class="reviewer-name">Priya K.</div>
+            <div class="reviewer-tag">Budget-conscious home cook</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-quote">"</div>
+        <p class="review-text">My doctor recommended I eat more fibre and cut down on sugar. Three months in and my cholesterol has improved significantly. Small changes, big results.</p>
+        <div class="review-stars">★★★★★</div>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#dbeafe;">😌</div>
+          <div>
+            <div class="reviewer-name">David H.</div>
+            <div class="reviewer-tag">Following doctor's advice</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-quote">"</div>
+        <p class="review-text">Getting my kids to eat more fruit and veg felt impossible — but making it fun with colourful smoothies and veggie wraps actually worked. They love it now!</p>
+        <div class="review-stars">★★★★★</div>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#f3e8ff;">👩</div>
+          <div>
+            <div class="reviewer-name">Aisha M.</div>
+            <div class="reviewer-tag">Parent of three</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-quote">"</div>
+        <p class="review-text">I started replacing white rice with quinoa and adding a salad to every dinner. My digestion improved within just two weeks. Would 100% recommend giving it a try.</p>
+        <div class="review-stars">★★★★★</div>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#d8f3dc;">🧑</div>
+          <div>
+            <div class="reviewer-name">James O.</div>
+            <div class="reviewer-tag">Healthy eating beginner</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+
+      <!-- Brand -->
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-mark">
+            <span class="footer-logo-nourish">N<span class="footer-logo-sushi">🍣</span>URISH</span>
+            <span class="footer-logo-foods">Foods</span>
+          </div>
+        </div>
+        <p class="footer-tagline">Elevating daily nourishment with premium organic produce and artisanal wellness essentials.</p>
+      </div>
+
+      <!-- HQ + Contact -->
+      <div class="footer-info">
+        <div class="footer-info-block">
+          <h4>Headquarters</h4>
+          <p>Manchester metro Politian<br>Manchester OL8 U6D</p>
+        </div>
+        <div class="footer-info-block">
+          <h4>Reach Out</h4>
+          <p>hello@nourishfoods.store<br>+(44) 07123 45678</p>
+        </div>
+        <!-- Social icons -->
+        <div class="footer-socials">
+          <a href="#" class="social-btn" style="background:#1877f2" title="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="social-btn" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)" title="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="white" stroke="none"/></svg>
+          </a>
+          <a href="#" class="social-btn" style="background:#ff0000" title="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.965C5.12 20 12 20 12 20s6.88 0 8.59-.455a2.78 2.78 0 0 0 1.95-1.965A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#ff0000"/></svg>
+          </a>
+          <a href="#" class="social-btn" style="background:#111" title="X / Twitter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="#" class="social-btn" style="background:#0077b5" title="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" class="social-btn" style="background:#000" title="TikTok">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Subscribe -->
+      <div class="footer-subscribe">
+        <h3 class="subscribe-title">SUBSCRIBE</h3>
+        <p class="subscribe-desc">Get weekly recipes, nutrition tips, and exclusive offers straight to your inbox.</p>
+        <div class="subscribe-form" id="subscribe-form">
+          <input type="email" id="sub-email" class="sub-email-input" placeholder="your@email.com" />
+          <button class="sub-email-btn" onclick="handleNewsletterSub()">→</button>
+        </div>
+        <p class="subscribe-success" id="subscribe-success">🌿 You're in! Check your inbox soon.</p>
+        <p class="footer-copy">© 2026 Nourish Foods. All rights reserved.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      const h = document.getElementById('hamburger');
+      const m = document.getElementById('mobile-nav');
+      h.classList.toggle('open');
+      m.classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('hamburger').classList.remove('open');
+      document.getElementById('mobile-nav').classList.remove('open');
+    }
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Subscription state
+    let sub = { plan: null, price: 0, meals: 2, pref: 'Everything', day: 'Monday', selected: [] };
+
+    function selectPlan(card, name, price) {
+      document.querySelectorAll('.plan-card').forEach(c => { c.classList.remove('selected'); c.querySelector('.plan-select-btn').textContent = 'Select'; });
+      card.classList.add('selected');
+      card.querySelector('.plan-select-btn').textContent = '✓ Selected';
+      sub.plan = name; sub.price = price;
+      sub.meals = name === 'Starter' ? 2 : name === 'Classic' ? 3 : 4;
+    }
+
+    function goStep(n) {
+      if (n === 2 && !sub.plan) { alert('Please select a plan first!'); return; }
+      if (n === 3) { buildSummary(); }
+      [1,2,3].forEach(i => {
+        document.getElementById('panel-' + i).classList.toggle('active', i === n);
+        const ind = document.getElementById('step-ind-' + i);
+        ind.classList.remove('active','done');
+        if (i < n) ind.classList.add('done');
+        else if (i === n) ind.classList.add('active');
+      });
+      document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function setPref(btn) {
+      btn.closest('.option-pills').querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      sub.pref = btn.textContent.trim();
+      const key = sub.pref.toLowerCase();
+
+      // Show/hide meals based on diet tag, deselect hidden ones
+      document.querySelectorAll('.meal-pill').forEach(pill => {
+        const diets = pill.dataset.diets || '';
+        const visible = diets.includes(key);
+        pill.style.display = visible ? '' : 'none';
+        if (!visible && pill.classList.contains('active')) {
+          pill.classList.remove('active');
+          const name = pill.textContent.trim();
+          sub.selected = sub.selected.filter(m => m !== name);
+        }
+      });
+      document.getElementById('meal-hint').textContent = `${sub.selected.length} of ${sub.meals} meals selected`;
+    }
+
+    function setDay(btn) {
+      btn.closest('.option-pills').querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active'); sub.day = btn.textContent;
+    }
+
+    function toggleMeal(el) {
+      const name = el.textContent.trim();
+      if (el.classList.contains('active')) {
+        el.classList.remove('active');
+        sub.selected = sub.selected.filter(m => m !== name);
+      } else {
+        if (sub.selected.length >= sub.meals) { alert(`Your ${sub.plan} plan includes ${sub.meals} meals. Deselect one first.`); return; }
+        el.classList.add('active'); sub.selected.push(name);
+      }
+      document.getElementById('meal-hint').textContent = `${sub.selected.length} of ${sub.meals} meals selected`;
+    }
+
+    function buildSummary() {
+      const mealsLabel = sub.plan === 'Starter' ? '2 meals / week' : sub.plan === 'Classic' ? '3 meals / week' : '4 meals / week';
+      const total = (sub.price * sub.meals).toFixed(2);
+      document.getElementById('sum-plan').textContent = sub.plan + ' — ' + mealsLabel;
+      document.getElementById('sum-pref').textContent = sub.pref;
+      document.getElementById('sum-day').textContent = sub.day;
+      document.getElementById('sum-meals').textContent = sub.selected.length ? sub.selected.join(', ') : 'Not selected yet';
+      document.getElementById('sum-price').textContent = '£' + sub.price.toFixed(2) + ' per meal';
+      document.getElementById('sum-total').textContent = '£' + total;
+    }
+
+    function handleNewsletterSub() {
+      const email = document.getElementById('sub-email').value.trim();
+      if (!email || !email.includes('@')) {
+        document.getElementById('sub-email').style.borderColor = 'salmon';
+        document.getElementById('sub-email').placeholder = 'Please enter a valid email';
+        return;
+      }
+      document.getElementById('subscribe-form').style.display = 'none';
+      document.getElementById('subscribe-success').style.display = 'block';
+    }
+
+    function handleSubscribe() {
+      alert('🎉 Thanks for subscribing to the ' + sub.plan + ' plan!\nYour first box will arrive on ' + sub.day + '.');
+    }
+  </script>
+</body>
+</html>
