@@ -1,37 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subscription</title>
+    <title>Name - Subscription</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&family=Black+Han+Sans&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="subscription.css">
 </head>
-
 <body>
-    <h1>Subscribe</h1>
-    <form onsubmit="event.preventDefault();">
-        <label for="fullName">Full Name:</label>
-        <input type="text" id="fullName" name="fullName" required>
-        <br><br>
+    <header>
+        <h1>Name</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart (0)</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="subscription.html">Subscription</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <label for="studentId">Student ID:</label>
-        <input type="text" id="studentId" name="studentId" required>
-        <br><br>
+    <main>
+        <section class="subscription-section">
+            <div class="subscription-card">
+                <h2>Subscribe</h2>
+                <p style="color: var(--mid);">Join our affordable meal plan for students.</p>
+                <form class="subscription-form" onsubmit="event.preventDefault();">
+                    <div class="form-group">
+                        <label for="fullName">Full Name:</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
 
-        <label for="email">Email address:</label>
-        <input type="email" id="email" name="email" required>
-        <br><br>
+                    <div class="form-group">
+                        <label for="studentId">Student ID:</label>
+                        <input type="text" id="studentId" name="studentId" required>
+                    </div>
 
-        <label for="phone">Phone Number:</label>
-        <input type="tel" id="phone" name="phone">
-        <br><br>
+                    <div class="form-group">
+                        <label for="email">Email address:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
 
-        <label for="address">Address:</label>
-        <textarea id="address" name="address" rows="3" required></textarea>
-        <br><br>
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
 
-        <button type="submit">Subscribe</button>
-    </form>
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <textarea id="address" name="address" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="major">Major/Course:</label>
+                        <input type="text" id="major" name="major">
+                    </div>
+
+                    <button type="submit" style="margin-top: 1rem; width: 100%;">Subscribe Now</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Name. All rights reserved.</p>
+        <p>
+            <a href="#privacy">Privacy Policy</a> |
+            <a href="#terms">Terms of Service</a>
+        </p>
+        <address>
+            Contact us: <a href="mailto:support@gmail.com">support@gmail.com</a>
+        </address>
+    </footer>
 </body>
-
 </html>
