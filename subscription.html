@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Name - Subscription</title>
+    <title>Nourish Foods · Subscription</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&family=Black+Han+Sans&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="subscription.css">
 </head>
+
 <body>
     <header>
-        <h1>Name</h1>
+        <h1>Nourish Foods · Healthier Eating Guide</h1>
         <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
@@ -31,7 +33,7 @@
             <div class="subscription-card">
                 <h2>Subscribe</h2>
                 <p style="color: var(--mid);">Join our affordable meal plan for students.</p>
-                <form class="subscription-form" onsubmit="event.preventDefault();">
+                <form class="subscription-form" onsubmit="event.preventDefault(); this.reset();">
                     <div class="form-group">
                         <label for="fullName">Full Name:</label>
                         <input type="text" id="fullName" name="fullName" required>
@@ -79,4 +81,5 @@
         </address>
     </footer>
 </body>
+
 </html>
